@@ -15,9 +15,8 @@ pipeline {
       }
 
     }
-    stage('Deploy') {
+    stage("deploy-dev"){
       steps {
-        //deploy war on tomcat server
         deploy adapters: [tomcat9(url: "${tomcatServerUrl}",
             credentialsId: 'tomcat-credentials')],
           war: 'target/*.war',
