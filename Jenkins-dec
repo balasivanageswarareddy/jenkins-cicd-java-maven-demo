@@ -1,22 +1,26 @@
 def tomcatServerUrl = "http://100.24.18.52"
 pipeline {
   agent any
-  
+
   stages {
-    stage('Code checkout') {
+    //Use this code for inline pipeline script option
+    /* stage('Code checkout') {
       steps {
+        //download code from github
         git branch: 'main', url: 'https://github.com/balasivanageswarareddy/jenkins-cicd-java-maven-demo.git'
       }
 
     }*/
     stage('Build') {
       steps {
-        sh 'mvn clean install'
+        // Run the maven build
+        sh 'mvn -Dmaven.test.failure.ignore=true install'
       }
 
     }
-    stage("deploy-dev"){
+    stage('Deploy') {
       steps {
+        //deploy war on tomcat server
         deploy adapters: [tomcat9(url: "${tomcatServerUrl}",
             credentialsId: 'tomcat-credentials')],
           war: 'target/*.war',
